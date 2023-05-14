@@ -170,7 +170,7 @@ def render_and_save_images(output_directory, camera_names, body_types, armature_
 
 def main():
 
-    num_cameras = 1
+    num_cameras = 50
     radius = 3.5
     # num_camers for each height, so 3 heighs is 150 cameras
     heights = [0.5, 1.0, 1.5]
