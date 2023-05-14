@@ -1,4 +1,3 @@
-/images
-*.jpeg
-*.tflite
-/poses_images_out_train
+**/node_modules
+/python_keras_model/data/**/**/*.jpg
+**/*.jpg
