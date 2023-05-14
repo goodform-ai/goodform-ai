@@ -1,0 +1,21 @@
+{
+    "name": "node_model",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tensorflow/tfjs": "^4.4.0",
+        "@tensorflow/tfjs-core": "^4.4.0",
+        "@tensorflow/tfjs-layers": "^4.4.0",
+        "@tensorflow/tfjs-node": "^4.4.0",
+        "@types/webgl-ext": "^0.0.33",
+        "csv-parse": "^5.3.9",
+        "fs": "^0.0.1-security"
+    }
+}
