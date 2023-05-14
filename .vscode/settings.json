@@ -1,5 +1,6 @@
 {
     "python.formatting.provider": "autopep8",
     "python.formatting.autopep8Args": ["--exclude=*movenetpreprocessor.py"],
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false,
+    "python.analysis.extraPaths": ["./Python-Vision/pose_estimation", "./Python-Vision/data_preparation"]
 }
