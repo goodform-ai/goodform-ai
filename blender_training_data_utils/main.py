@@ -1,7 +1,7 @@
 import bpy
 import os
 import math
-
+import numpy as np
 
 # Print iterations progress
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', printEnd="\r"):
@@ -86,22 +86,25 @@ def create_empty_object(location, collection):
     return empty_object
 
 
-def generate_cameras(num_cameras, radius, heights, focal_length):
+def generate_cameras(num_cameras, radius, heights, focal_length, start_angle=0, end_angle=180):
     all_cameras = []
     camera_count = 0
 
+    # Generate the list of angles
+    angles = np.linspace(start_angle, end_angle, num_cameras)
+
     for height in heights:
-        angle_step = 2 * math.pi / num_cameras
-        for i in range(num_cameras):
-            angle = i * angle_step
-            x = radius * math.cos(angle)
-            y = radius * math.sin(angle)
+        for angle in angles:
+            # Convert angle to radians
+            rad_angle = np.radians(angle)
+            x = radius * math.cos(rad_angle)
+            y = radius * math.sin(rad_angle)
             z = height
 
             location = (x, y, z)
-            rotation = (0, 0, angle)
-            camera_name = f"Camera{camera_count + 1}"
+            rotation = (0, 0, rad_angle)
 
+            camera_name = f"Camera{camera_count + 1}"
             all_cameras.append((camera_name, location, rotation, focal_length))
             camera_count += 1
 
@@ -175,13 +178,13 @@ def main():
     # num_camers for each height, so 3 heighs is 150 cameras
     heights = [0.5, 1.0, 1.5]
     focal_lengths = [25, 35, 50]
-    cameras = generate_cameras(num_cameras, radius, heights, focal_lengths[1])
+    cameras = generate_cameras(num_cameras, radius, heights, focal_lengths[0], start_angle=180, end_angle=360)
 
     # List the names of the cameras you have manually placed in the scene
     camera_names = [camera[0] for camera in cameras]
 
     # Set the output directory for the rendered images
-    output_directory = r"C:\Users\Admin\Documents\Python\TensorFlow\Keras\Pose Classification\images"
+    output_directory = r"C:\Users\Admin\Documents\Python\TensorFlow\Keras\Pose Classification\python_keras_model\squat\squat_poses\standing"
 
     # Define preset scale factors for different body types
     # (X, Y, Z)
