@@ -10,6 +10,10 @@ def update_to_keypoint_directory(dir_path):
     # construct the new directory
     new_dir = os.path.join(parent_dir, f'{last_part}_keypoint_data')
 
+    # create the new directory if it doesn't exist
+    if not os.path.exists(new_dir):
+        os.makedirs(new_dir)
+
     return new_dir
 
 def update_to_pose_output_directory(dir_path):
