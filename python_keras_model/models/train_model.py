@@ -25,7 +25,7 @@ def create_and_train_model(csvs_out_train_path, csvs_out_test_path, test_size=0.
     layer = keras.layers.Dropout(0.5)(layer)
     layer = keras.layers.Dense(64, activation=tf.nn.relu6)(layer)
     layer = keras.layers.Dropout(0.5)(layer)
-    outputs = keras.layers.Dense(len(class_names), activation="softmax")(layer)
+    outputs = keras.layers.Dense(len(class_names), activation="sigmoid")(layer)
 
     model = keras.Model(inputs, outputs)
     model.summary()

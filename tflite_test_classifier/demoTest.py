@@ -48,17 +48,20 @@ def run_tflite_model(interpreter, input_data):
     return output_data
 
 
-def process_pose_classifier_output(output_data):
+def process_pose_classifier_output(output_data, threshold=0.5):
     # Process the output data depending on your model's output format
     # For example, if it's a simple classification model, you may return the class index with the highest probability
     output_data = np.array(output_data)
-    predicted_class = np.argmax(output_data)
+    # Since it's a sigmoid output, we don't need argmax
+    # Instead, we check if the output is greater than or equal to the threshold
+    predicted_classes = (output_data >= threshold).astype(int)
 
     # Assuming you have a list of class names like this:
-    class_names = ['bad-knee-valgus', 'good']
+    class_names = ['bad-back', 'bad-knee-valgus', 'good']
 
-    label = class_names[predicted_class]
-    print("Pose Classification Result:", label)
+    labels = [class_names[i] for i, is_present in enumerate(predicted_classes[0]) if is_present]
+
+    print("Pose Classification Result:", labels, predicted_classes)
 
 
 def get_color_by_score(score: float):
@@ -200,8 +203,8 @@ def capture_video(process_frame):
 
 
 # Load TFLite model
-pose_classifier_tflite_path = "pose_classifier.tflite"
+pose_classifier_tflite_path = "model.tflite"
 pose_classifier_interpreter = load_tflite_model(pose_classifier_tflite_path)
 
-movenet = MoveNet()
+movenet = MoveNet(model_name="movenet_lightning")
 capture_video(process_capture_frame)
