@@ -14,7 +14,7 @@ base_key_points = [BodyPart.LEFT_HIP, BodyPart.RIGHT_HIP,
 
 exercise_key_points = {
     "squat": {
-        "image_set_dir": 'C:\\Users\\Admin\\Documents\\Python\\TensorFlow\\Keras\\Pose Classification\\Python-Vision\\data\\squat\\squat_poses',
+        "image_set_dir": 'C:\\Users\\Admin\\Documents\\Python\\TensorFlow\\Keras\\Pose Classification\\python_keras_model\\data\\squat\\squat_poses',
         "keypoints": base_key_points + [BodyPart.LEFT_KNEE, BodyPart.RIGHT_KNEE, BodyPart.LEFT_ANKLE, BodyPart.RIGHT_ANKLE]
         },
 }
