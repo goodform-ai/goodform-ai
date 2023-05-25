@@ -30,7 +30,7 @@ class LandmarksToEmbedding extends tf.layers.Layer {
         }
 
         // Reshape the input 1D tensor to a shape of a 2D tensor with [this.numKeyPoints, 3] (this.numKeyPoints landmarks with 3 items each)
-        // The input shape is [51] because the pose landmarks input data has this.numKeyPoints points, and each point has 3 items (x, y, and score).
+        // The input shape is [numKeyPoints * 3] because the pose landmarks input data has this.numKeyPoints points, and each point has 3 items (x, y, and score).
         // This reshaping step makes it easier to work with the landmarks data and perform further processing,
         // like removing the confidence scores, normalizing the landmarks, and flattening them into an embedding.
         const reshapedInputs = tf.layers.reshape({ targetShape: [this.numKeyPoints, 3] }).apply(input);
