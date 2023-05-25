@@ -1,3 +1,4 @@
 **/node_modules
 /python_keras_model/data/**/**/*.jpg
 **/*.jpg
+**/logs
