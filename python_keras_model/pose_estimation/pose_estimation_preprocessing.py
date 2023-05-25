@@ -45,14 +45,15 @@ def detect(input_tensor, inference_count=3, key_point_indices=None):
     for _ in range(inference_count - 1):
         person = movenet.detect(input_tensor.numpy(), reset_crop_region=False)
 
-    if key_point_indices is not None:
-        all_keypoints = person.keypoints.copy()
-        for i in range(len(all_keypoints)):
-            if i not in key_point_indices:
-                all_keypoints[i] = KeyPoint(
-                    all_keypoints[i].body_part, Point(0, 0), float(0))
-        person = Person(all_keypoints, person.bounding_box,
-                        person.score, person.id)
+    # zero out keypoints
+    # if key_point_indices is not None:
+    #     all_keypoints = person.keypoints.copy()
+    #     for i in range(len(all_keypoints)):
+    #         if i not in key_point_indices:
+    #             all_keypoints[i] = KeyPoint(
+    #                 all_keypoints[i].body_part, Point(0, 0), float(0))
+    #     person = Person(all_keypoints, person.bounding_box,
+    #                     person.score, person.id)
     return person
 
 # Functions to visualize the pose estimation results.
@@ -253,17 +254,17 @@ class MoveNetPreprocessor(object):
                     cv2.imwrite(os.path.join(
                         images_out_folder, image_name), output_frame)
 
-                    # Add missing keypoints back for csv to maintain 17 points
-                    if self.key_point_indices is not None:
-                        # Create a full set of keypoints initialized to (0,0,0)
-                        all_keypoints = [KeyPoint(body_part.value, Point(0, 0), 0.0) for body_part in BodyPart]
+                    # # Add missing keypoints back for csv to maintain 17 points
+                    # if self.key_point_indices is not None:
+                    #     # Create a full set of keypoints initialized to (0,0,0)
+                    #     all_keypoints = [KeyPoint(body_part.value, Point(0, 0), 0.0) for body_part in BodyPart]
                         
-                        # For each keypoint that was detected, replace the corresponding keypoint in all_keypoints
-                        for keypoint in person.keypoints:
-                            all_keypoints[keypoint.body_part.value] = keypoint
+                    #     # For each keypoint that was detected, replace the corresponding keypoint in all_keypoints
+                    #     for keypoint in person.keypoints:
+                    #         all_keypoints[keypoint.body_part.value] = keypoint
 
-                        # Now all_keypoints contains all keypoints, either detected or default (0,0,0)
-                        person = Person(all_keypoints, person.bounding_box, person.score, person.id)
+                    #     # Now all_keypoints contains all keypoints, either detected or default (0,0,0)
+                    #     person = Person(all_keypoints, person.bounding_box, person.score, person.id)
 
                     # Get landmarks and scale it to the same size as the input image
                     pose_landmarks = np.array(
@@ -314,14 +315,13 @@ class MoveNetPreprocessor(object):
                 # Concatenate each class's data into the total dataframe
                 total_df = pd.concat([total_df, per_class_df], axis=0)
 
-        list_name = [[bodypart.name + '_x', bodypart.name + '_y',
-                      bodypart.name + '_score'] for bodypart in BodyPart]
+        list_name = [[bodypart.name + '_x', bodypart.name + '_y', bodypart.name + '_score'] for bodypart in BodyPart if bodypart.value in self.key_point_indices]
         header_name = []
         for columns_name in list_name:
             header_name += columns_name
         header_name = ['file_name'] + header_name
         header_map = {total_df.columns[i]: header_name[i]
-                      for i in range(len(header_name))}
+                        for i in range(len(header_name))}
 
         total_df.rename(header_map, axis=1, inplace=True)
 
